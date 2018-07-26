@@ -111,6 +111,11 @@ of the default first-in-first-out.
 
 =head1 SEE ALSO
 
-B<sort>
+To sort numerically or alphabetically, use the Unix command B<sort>.
+
+To print the longest line, you can use C<wc -L>.
+
+To sort by several other criteria, check out L<sortsub> and the various
+C<Sort::Sub::*> backend modules.
 
 =cut
