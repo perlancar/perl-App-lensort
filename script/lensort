@@ -33,11 +33,11 @@ USAGE
 sub run {
     my @lines;
     my $i = 0;
-    if ($args{reverse}) {
-        @lines = map { $_->[0] } sort { $b->[1] cmp $a->[1] || $b->[2] <=> $a->[2] }
+    if ($Opts{reverse}) {
+        @lines = map { $_->[0] } sort { $b->[1] <=> $a->[1] || $b->[2] <=> $a->[2] }
             map { [$_, length($_), $i++] } <>;
     } else {
-        @lines = map { $_->[0] } sort { $a->[1] cmp $b->[1] || $a->[2] <=> $b->[2] }
+        @lines = map { $_->[0] } sort { $a->[1] <=> $b->[1] || $a->[2] <=> $b->[2] }
             map { [$_, length($_), $i++] } <>;
     }
 
