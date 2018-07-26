@@ -1,0 +1,116 @@
+#!perl
+
+# DATE
+# VERSION
+
+use 5.010001;
+use strict;
+use warnings;
+
+use Getopt::Long;
+
+my %Opts = (
+    reverse => 0,
+);
+
+sub parse_cmdline {
+    my $res = GetOptions(
+        'reverse|r'     => \$Opts{reverse},
+        'help|h'        => sub {
+            print <<USAGE;
+Usage:
+  lensort [OPTIONS]...
+Options:
+  --reverse, -r
+For more details, see the manpage/documentation.
+USAGE
+            exit 0;
+        },
+    );
+    exit 99 if !$res;
+}
+
+sub run {
+    my @lines;
+    my $i = 0;
+    if ($args{reverse}) {
+        @lines = map { $_->[0] } sort { $b->[1] cmp $a->[1] || $b->[2] <=> $a->[2] }
+            map { [$_, length($_), $i++] } <>;
+    } else {
+        @lines = map { $_->[0] } sort { $a->[1] cmp $b->[1] || $a->[2] <=> $b->[2] }
+            map { [$_, length($_), $i++] } <>;
+    }
+
+    print for @lines;
+}
+
+# MAIN
+
+parse_cmdline();
+run();
+
+1;
+# ABSTRACT: Sort lines of text by their length
+# PODNAME:
+
+=head1 SYNOPSIS
+
+ lensort [OPTION]... [FILE]...
+
+Sample input:
+
+ one
+ two
+ three
+ four
+
+Sample output (C<lensort>):
+
+ one
+ two
+ four
+ three
+
+Sample output (C<lensort -r>):
+
+ three
+ four
+ two
+ one
+
+
+=head1 DESCRIPTION
+
+This utility sorts lines of text by their length. The default is shortest first
+(if C<--reverse> a.k.a. C<-r> is given, will show longest line first). Lines
+with same length will be sorted by appearance (first in first out).
+
+
+=head1 OPTIONS
+
+=over
+
+=item --reverse, -r
+
+Show longest line first instead of the default shortest line first. Also, under
+C<-r> line that appears later will be shown earlier (last-in-first-out) instead
+of the default first-in-first-out.
+
+=back
+
+
+=head1 EXIT CODES
+
+0 on success.
+
+99 on command-line options error.
+
+
+=head1 FAQ
+
+
+=head1 SEE ALSO
+
+B<sort>
+
+=cut
