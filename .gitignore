@@ -2,3 +2,4 @@ App-lensort-*
 .build
 *~
 nytprof*
+.DS_Store
